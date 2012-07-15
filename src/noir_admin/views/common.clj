@@ -3,11 +3,11 @@
         [hiccup.page]
         [noir-admin.views.utils]))
 
-(def includes {:jquery (include-js "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js")
+(def includes {:jquery (include-js "http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.2.min.js")
                  :chosen-js (include-js "/chosen/chosen.jquery.min.js")
-                 :bootstrap-js (include-js "/bootstrap/js/bootstrap.js")
-                 :bootstrap-less (include-less "/bootstrap/css/bootstrap.less")
-                 :less-js (include-js "/js/less-1.3.0.min.js")
+                 :bootstrap-js (include-js "http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.4/bootstrap.min.js")
+                 :bootstrap-less (include-less "/bootstrap/less/bootstrap.less")
+                 :less-js (include-js "http://cdnjs.cloudflare.com/ajax/libs/less.js/1.3.0/less-1.3.0.min.js")
                  :admin-css (include-css "/css/admin.css")})
 
 (defpartial includes-res [& incls]
