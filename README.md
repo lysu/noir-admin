@@ -2,13 +2,13 @@
 
 ## Introduction
 
-a simple administrative interface framework for Noir
+a simple administrative interface framework for [Noir](https://github.com/noir-clojure/noir)
 
 The idea came from [flask-admin](https://github.com/mrjoes/flask-admin).
 
 ## 3rd Party Stuff
 
-Compojure-Admin is built with help of [Twitter Bootstrap](https://github.com/twitter/bootstrap) and [Less](https://github.com/cloudhead/less.js).
+Noir-Admin is built with help of [Twitter Bootstrap](https://github.com/twitter/bootstrap) and [Less](https://github.com/cloudhead/less.js).
 
 ## License
 
