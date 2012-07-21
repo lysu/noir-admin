@@ -1,5 +1,5 @@
 (ns noir-admin.server
-	(:require [noir.server :as server]))
+  (:require [noir.server :as server]))
 
 (server/load-views-ns 'noir-admin.views)
 
