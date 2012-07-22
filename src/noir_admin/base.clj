@@ -9,6 +9,51 @@
    :url url
    :static-folder static-folder})
 
+(defn is-view-accessible?
+  "check view accessible"
+  [view]
+  true)
+
+(defn menu-item
+  "build-menu-item"
+  [name view]
+  {:name name :view view
+   :children []
+   :children-urls #{}})
+
+(defn add-menu-child
+  "add menu child"
+  [menu view]
+  (-> menu
+      (update-in [:children] conj view)
+      (update-in [:children-urls] conj (:url view))))
+
+(defn get-menu-url
+  "get url attached in menu"
+  [menu]
+  (when-not (:view menu)
+    nil)
+  (str (get-in menu [:view :endpoint]) "/"))
+
+(defn is-menu-active?
+  "is a active menu"
+  [menu]
+  (when-not (:view menu)
+    nil)
+  (is-view-accessible? (:view menu)))
+
+(defn is-category?
+  "is a category menu"
+  [menu]
+  (when-not (:view menu)
+    nil)
+  (nil? (:view menu)))
+
+(defn get-menu-children
+  "get menu children"
+  [menu]
+  (filter #(is-view-accessible? %) (:children menu)))
+
 (defn admin
   "build admin struct"
   [name url index-view]
@@ -22,8 +67,17 @@
 (defn add-view-to-menu
   "add view to menu list"
   [admin view]
-  (if (:category view)
-    ))
+  (if-let [category (:category view)]
+    (if-let [exist-category
+             ((:menu-categories admin) (:category view))]
+      (update-in admin [:menu-categories (:category view)]
+                 add-menu-child exist-category)
+      (let [new-category (menu-item (:category view))]
+        (-> admin
+            (assoc-in [:menu-categories (:category view)] new-category)
+            (update-in [:menu] conj new-category)
+            (update-in [:menu-categories (:category view)]
+                       add-menu-child new-category))))))
 
 (defn add-view 
   "add view to exist admin"
