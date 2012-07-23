@@ -59,3 +59,26 @@
           view-c (view "test-name-child" "test-category" "endpoint" "url://sf" "/abc")
           added (add-menu-child parent view-c)]
       (is (= 1 (count (get-menu-children added)))))))
+
+(deftest should-build-admin
+  (testing "should build admin"
+    (let [expect-name "name"
+          url "abc.htm"
+          v nil
+          amin (admin expect-name url v)]
+      (is (= nil amin)))))
+
+(deftest should-add-view-to-menu
+  (testing "should add view to menu"
+    (let [view-1 (view "test-name" "test-category" "endpoint" "url://sf" "/abc")
+          view-2 (view "test-name" "test-category" "endpoint" "url://sf" "/abc")
+          admin (admin "test" "t.cn" view-1)]
+      (is (= (+ 1 (count (:views admin))) (count (:views (add-view admin view-2))))))))
+
+
+(deftest should-add-to-admin-app
+  (testing "should add menu to app"
+    (let [view-1 (view "test-name-1" "test-category" "endpoint" "url://sf" "/abc1")
+          view-2 (view "test-name-2" "test-category-2" "endpoint" "url://sf" "/abc2")
+          admin (admin "test" "t.cn" view-1)]
+      (is (= 2 (count (:menu-categories (add-view admin view-2))))))))
