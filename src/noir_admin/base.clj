@@ -42,7 +42,7 @@
     nil)
   (is-view-accessible? (:view menu)))
 
-(defn is-category?
+(defn is-menu-category?
   "is a category menu"
   [menu]
   (when-not (:view menu)
@@ -54,33 +54,35 @@
   [menu]
   (filter #(is-view-accessible? %) (:children menu)))
 
-(defn admin
-  "build admin struct"
-  [name url index-view]
-  {:name (or name "Admin")
-   :url (or url "/admin")
-   :index-view (or index-view nil)
-   :views [index-view]
-   :menu []
-   :menu-categories {}})
-
 (defn add-view-to-menu
   "add view to menu list"
   [admin view]
   (if-let [category (:category view)]
     (if-let [exist-category
-             ((:menu-categories admin) (:category view))]
-      (update-in admin [:menu-categories (:category view)]
+             ((:menu-categories admin) category)]
+      (update-in admin [:menu-categories category]
                  add-menu-child exist-category)
-      (let [new-category (menu-item (:category view))]
+      (let [new-category (menu-item category nil)]
         (-> admin
-            (assoc-in [:menu-categories (:category view)] new-category)
+            (assoc-in [:menu-categories category] new-category)
             (update-in [:menu] conj new-category)
-            (update-in [:menu-categories (:category view)]
+            (update-in [:menu-categories category]
                        add-menu-child new-category))))))
 
 (defn add-view 
   "add view to exist admin"
   [admin view]
-  (update-in admin [:views] conj view))
+  (let [view-added-admin (update-in admin [:views] conj view)]
+    (add-view-to-menu view-added-admin view)))
 
+
+(defn admin
+  "build admin struct"
+  [name url index-view]
+  (let [new-admin {:name (or name "Admin")
+                   :url (or url "/admin")
+                   :index-view (or index-view nil)
+                   :views [index-view]
+                   :menu []
+                   :menu-categories {}}]
+    (add-view new-admin index-view)))
